@@ -98,28 +98,28 @@ suite('Functional Tests with chai-http', function () {
 });
 
 // Browser.site = `http://localhost:3000`;
-Browser.site = "https://metconvert-test.stlwanga.repl.co";
+// Browser.site = "https://metconvert-test.stlwanga.repl.co";
 
-suite('Functional tests with Zombie.js', function() {
-	const browser = new Browser();
+// suite('Functional tests with Zombie.js', function() {
+// 	const browser = new Browser();
 
-	suiteSetup(function(done) {
-		this.timeout = 6000
-    return browser.visit('/', done);
-  });
+// 	suiteSetup(function(done) {
+//     return browser.visit('/', done);
+//   });
 
-	suite('Functional conversion form', () => {
-		test('Form that accepts input for conversion is loaded', done => {
-			browser.assert.element('form#convertForm');
-			done();
-		});
-		// test('Form accepts input and displays a result', done => {
-		// 	browser.fill("input", "10L").pressButton("submit", () => {
-		// 		browser.assert.success();
-		// 		// browser.assert.elements('p#result', 1);
-		// 		// browser.assert.element('code#json', 1);
-		// 		done();
-		// 	})
-		// })
-	});
-});
+// 	suite('Functional conversion form', () => {
+// 		test('Form that accepts input for conversion is loaded', done => {
+// 			browser.assert.element('form#convertForm');
+// 			done();
+// 		});
+// 		test('Form accepts input and displays a result', done => {
+// 			browser.fill('input', '10L')
+// 				.then(() => browser.pressButton('submit', () => {
+// 					browser.assert.success();
+// 					browser.assert.elements('p#result', 1);
+// 					browser.assert.element('code#json', 1);
+// 					done();
+// 				}))
+// 		});
+// 	});
+// });
