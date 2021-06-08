@@ -16,6 +16,8 @@ function ConvertHandler() {
       value: 1,
     }
 
+    if (input.match(/\d*\W{2,}\d/g) !== null) return { isNum: false }
+
     // If not fraction parse float from input
     if (!input.includes('/')) {
       let num = parseFloat(input)
@@ -93,17 +95,17 @@ function ConvertHandler() {
     
     switch (initUnit) {
       case ('gal'):
-        return (initNum * galToL).toFixed(5);
+        return (initNum * galToL) === 1 ? 1 : (initNum * galToL).toFixed(5);
       case ('mi'):
-        return (initNum * miToKm).toFixed(5);
+        return (initNum * miToKm) === 1 ? 1 : (initNum * miToKm).toFixed(5);
       case ('lbs'):
-        return (initNum * lbsToKg).toFixed(5);
+        return (initNum * lbsToKg) === 1 ? 1 : (initNum * lbsToKg).toFixed(5);
       case ('kg'):
-        return (initNum * kgToLbs).toFixed(5);
+        return (initNum * kgToLbs) === 1 ? 1 : (initNum * kgToLbs).toFixed(5);
       case ('km'):
-        return (initNum * kmToMi).toFixed(5);
+        return (initNum * kmToMi) === 1 ? 1 : (initNum * kmToMi).toFixed(5);
       case ('l'):
-        return (initNum * lToGal).toFixed(5);
+        return (initNum * lToGal) === 1 ? 1 : (initNum * lToGal).toFixed(5);
       default:
         return 'invalid unit'
     }
@@ -117,17 +119,17 @@ function ConvertHandler() {
     const fullReturnunit = this.spellOutUnit(returnUnit);
 
     const initNum = this.getNum(input);
-    const returnNum = initNum.isNum ? this.convert(initNum, initUnit) : 'invalid number'
+    const returnNum = initNum.isNum ? this.convert(initNum.value, initUnit) : 'invalid number';
 
     switch(true) {
       case(returnNum === 'invalid number'):
-        return returnNum;
+        return {err: true, msg: returnNum};
       case(returnUnit === 'invalid unit'):
-        return returnUnit;
+        return {err: true, msg: returnUnit};
       case(returnNum === 'invalid number' && returnUnit === 'invalid unit'):
-        return `${returnNum} and ${returnUnit}`;
+        return {err: true, msg:`${returnNum} and ${returnUnit}`};
       default:
-        return `{"initial value": ${initNum} ${initUnit}, "converted value": ${returnNum} ${returnUnit}}`;
+        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit};
     }
   };
 }

@@ -5,10 +5,10 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js",
-		"test": "mocha ./tests/ --ui tdd"
+		"test": "mocha ./tests/ --ui tdd",
+		"nyctest": "nyc --recursive --reporter mocha-junit-reporter npm start"
 	},
 	"dependencies": {
-		"body-parser": "^1.19.0",
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
 		"cors": "^2.8.5",
@@ -28,6 +28,9 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
-		"nodemon": "^2.0.7"
+		"mocha-junit-reporter": "^2.0.0",
+		"nodemon": "^2.0.7",
+		"nyc": "^15.1.0",
+		"zombie": "^6.1.4"
 	}
 }

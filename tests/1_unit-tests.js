@@ -75,7 +75,6 @@ suite('Unit Tests', function () {
 			done();
 		});
 		test('Return an error for an invalid unit', done => {
-			// assert.fail('Not tested for valid unit in input')
 			const input = 'xxx';
 			assert.match(convertHandler.getReturnUnit(input), /^invalid unit$/);
 			done();
@@ -84,11 +83,14 @@ suite('Unit Tests', function () {
 
 	suite('Test spelled-out string for a valid input', function () {
 		test('Return correctly spelled-out strings for valid unit names', done => {
-			assert.fail('Spelled-out valid unit strings untested')
+			const input = ['gal', 'kg', 'km', 'l', 'lbs', 'mi',];
+			const spelledOut = ['gallons', 'kilograms', 'kilometres', 'litres', 'pounds', 'miles',];
+			input.every((unit, i) => assert.equal(convertHandler.spellOutUnit(unit), spelledOut[i]));
 			done();
 		});
 		test('Return an error for an invalid unit', done => {
-			assert.fail('Test not written')
+			const input = 'otherUnit';
+			assert.equal(convertHandler.spellOutUnit(input), 'invalid unit');
 			done();
 		});
 	});
