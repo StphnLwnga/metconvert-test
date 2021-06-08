@@ -122,12 +122,12 @@ function ConvertHandler() {
     const returnNum = initNum.isNum ? this.convert(initNum.value, initUnit) : 'invalid number';
 
     switch(true) {
+      case(returnNum === 'invalid number' && returnUnit === 'invalid unit'):
+        return {err: true, msg:`${returnNum} and ${returnUnit}`};
       case(returnNum === 'invalid number'):
         return {err: true, msg: returnNum};
       case(returnUnit === 'invalid unit'):
         return {err: true, msg: returnUnit};
-      case(returnNum === 'invalid number' && returnUnit === 'invalid unit'):
-        return {err: true, msg:`${returnNum} and ${returnUnit}`};
       default:
         return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit};
     }

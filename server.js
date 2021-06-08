@@ -18,6 +18,13 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+	res.header('Access-Control-Expose-Headers', '*')
+	next();
+})
+
 //Index page (static HTML)
 app.route('/')
   .get(function (req, res) {

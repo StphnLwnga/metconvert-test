@@ -15,7 +15,11 @@ module.exports = function (app) {
     const fullInitUnit = convertHandler.spellOutUnit(json.initUnit);
     const fullReturnUnit = convertHandler.spellOutUnit(json.returnUnit);
 
-    if (!json.err) json.string = `${json.initNum} ${json.initNum === 1 ? fullInitUnit.substr(0, fullInitUnit.length -1 ): fullInitUnit} 👉🏾️ ${json.returnNum} ${json.returnNum === 1 ? fullReturnUnit.substr(0, fullReturnUnit.length -1 ) : fullReturnUnit}`;
+    if (!json.err) {
+      json.initUnitStr = fullInitUnit;
+      json.returnUnitStr = fullReturnUnit
+      json.string = `${json.initNum} ${json.initNum === 1 ? fullInitUnit.substr(0, fullInitUnit.length -1 ): fullInitUnit} 👉🏾️ ${json.returnNum} ${json.returnNum === 1 ? fullReturnUnit.substr(0, fullReturnUnit.length -1 ) : fullReturnUnit}`;
+    }
     // console.log(json);
     res.json(json);
   });
