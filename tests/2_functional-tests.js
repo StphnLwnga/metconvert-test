@@ -29,7 +29,7 @@ suite('Functional Tests with chai-http', function () {
 					assert.notProperty(res.body, 'err')
 					assert.equal(res.body.initNum, 10);
 					assert.equal(res.body.initUnit, 'L')
-					assert.equal(res.body.returnUnitStr, 'gallons');
+					assert.equal(res.body.returnUnit, 'gal');
 					assert.approximately(parseFloat(res.body.returnNum), 2.64172, 0.1);
 					assert.property(res.body, 'string');
 					done();
@@ -88,7 +88,7 @@ suite('Functional Tests with chai-http', function () {
 					assert.notProperty(res.body, 'err');
 					assert.equal(res.body.initNum, 1);
 					assert.equal(res.body.initUnit, 'kg')
-					assert.equal(res.body.returnUnitStr, 'pounds');
+					assert.equal(res.body.returnUnit, 'lbs');
 					assert.approximately(parseFloat(res.body.returnNum), 2.20462, 0.1);
 					assert.property(res.body, 'string');
 					done();

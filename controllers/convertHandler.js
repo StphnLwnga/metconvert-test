@@ -134,7 +134,7 @@ function ConvertHandler() {
       case(returnUnit === 'invalid unit'):
         return {err: true, msg: returnUnit};
       default:
-        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit, string: `${initNum} ${initUnitString} converts to ${returnNum} ${returnUnitString}`};
+        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit, string: `${initNum.value} ${initUnitString} converts to ${returnNum} ${returnUnitString}`};
     }
   };
 }
