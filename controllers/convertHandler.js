@@ -53,6 +53,7 @@ function ConvertHandler() {
     const validUnits = this.validUnits();
     let unit = input.match(/[a-zA-Z]/g).join('');
     unit = unit === 'l' || unit === 'L' ? unit.toUpperCase() : unit.toLowerCase();
+    // console.log(unit)
     let result;
     result = !Object.keys(validUnits).includes(unit) ? { isUnit: false } : { isUnit: true, value: unit, }
     // console.log(result)

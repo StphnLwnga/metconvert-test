@@ -59,6 +59,36 @@ suite('Unit Tests', function () {
 			assert.isTrue(input.every(u => validUnits.includes(u)), 'Checks whether each element in the input is a valid unit')
 			done();
 		});
+		test('gal to L irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('gal'), 'L');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('gal'.toUpperCase()).value), 'L');
+			done();
+		});
+		test('lbs to kg irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('lbs'), 'kg');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('lbs'.toUpperCase()).value), 'kg');
+			done();
+		});
+		test('mi to km irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('mi'), 'km');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('mi'.toUpperCase()).value), 'km');
+			done();
+		});
+		test('L to gal irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('L'), 'gal');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('L'.toLowerCase()).value), 'gal');
+			done();
+		});
+		test('kg to lbs irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('kg'), 'lbs');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('kg'.toUpperCase()).value), 'lbs');
+			done();
+		});
+		test('km to mi irrespective of case', done => {
+			assert.equal(convertHandler.getReturnUnit('km'), 'mi');
+			assert.equal(convertHandler.getReturnUnit(convertHandler.getUnit('km'.toUpperCase()).value), 'mi');
+			done();
+		});
 	});
 
 	suite('Test correct unit conversion with the converted units method', function () {
