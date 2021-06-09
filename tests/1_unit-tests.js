@@ -5,7 +5,7 @@ const ConvertHandler = require('../controllers/convertHandler.js');
 let convertHandler = new ConvertHandler();
 
 suite('Unit Tests', function () {
-	suite('Test ConvertHandler instance', function(done) {
+	suite('Test ConvertHandler instance', function (done) {
 		test('convertHandler is an instance of ConvertHandler controller', done => {
 			assert.instanceOf(convertHandler, ConvertHandler);
 			done()
@@ -51,47 +51,61 @@ suite('Unit Tests', function () {
 		});
 	});
 
-	suite('Check for valid & invalid unit input in the get units method', function () {
+	suite('Check for valid number & valid unit in the input', function () {
 		test('Read each valid input correctly', done => {
-			const input = ['gal', 'kg', 'km', 'l', 'lbs', 'mi',];
+			const input = ['gal', 'kg', 'km', 'L', 'lbs', 'mi',];
 			const validUnits = Object.keys(convertHandler.validUnits());
 			assert.isArray(validUnits, 'An array with valid units as elements');
 			assert.isTrue(input.every(u => validUnits.includes(u)), 'Checks whether each element in the input is a valid unit')
-			done();
-		});
-		test('Return an error for an invalid unit', done => {
-			const input = 'xxx';
-			const validUnits = Object.keys(convertHandler.validUnits());
-			assert.isFalse(validUnits.includes(input), 'Invalid unit is absent in array of valid units');
 			done();
 		});
 	});
 
 	suite('Test correct unit conversion with the converted units method', function () {
 		test('Return the correct return unit for each valid input', done => {
-			const input = ['gal', 'kg', 'km', 'l', 'lbs', 'mi',];
-			const converted = ['l', 'lbs', 'mi', 'km', 'gal', 'kg'];
+			const input = ['gal', 'kg', 'km', 'L', 'lbs', 'mi',];
+			const converted = ['L', 'lbs', 'mi', 'km', 'gal', 'kg'];
 			input.every((unit, i) => assert.equal(convertHandler.getReturnUnit(unit), converted[i]));
 			done();
 		});
-		test('Return an error for an invalid unit', done => {
-			const input = 'xxx';
-			assert.match(convertHandler.getReturnUnit(input), /^invalid unit$/);
+		test('Return "invalid unit" if input contains invalid unit', done => {
+			const input = '32g';
+			assert.isFalse(convertHandler.getUnit(input).isUnit);
+			assert.equal(convertHandler.getReturnUnit(input), 'invalid unit');
+			done();
+		});
+		test('Return "invalid number" if input contains invalid number', done => {
+			const input = '3/7.2/4kg';
+			const initNum = convertHandler.getNum(input).value;
+			const initUnit = convertHandler.getUnit(input).value;
+			assert.isTrue(convertHandler.getUnit(input).isUnit);
+			assert.equal(convertHandler.convert(initNum, initUnit), 'invalid number');
+			done();
+		});
+		test('Return "invalid number and unit" if input contains both an invalid number and unit', done => {
+			const input = '3/7.2/4kilomegagram';
+			const initNum = convertHandler.getNum(input).value;
+			const initUnit = 'kilomegagram';
+			assert.isFalse(convertHandler.getUnit(input).isUnit);
+			assert.equal(convertHandler.getString(input).msg, 'invalid number and unit');
 			done();
 		});
 	});
 
 	suite('Test spelled-out string for a valid input', function () {
 		test('Return correctly spelled-out strings for valid unit names', done => {
-			const input = ['gal', 'kg', 'km', 'l', 'lbs', 'mi',];
-			const spelledOut = ['gallons', 'kilograms', 'kilometres', 'litres', 'pounds', 'miles',];
+			const input = ['gal', 'kg', 'km', 'L', 'lbs', 'mi',];
+			const spelledOut = ['gallons', 'kilograms', 'kilometres', 'liters', 'pounds', 'miles',];
 			input.every((unit, i) => assert.equal(convertHandler.spellOutUnit(unit), spelledOut[i]));
 			done();
 		});
-		test('Return an error for an invalid unit', done => {
-			const input = 'otherUnit';
-			assert.equal(convertHandler.spellOutUnit(input), 'invalid unit');
+	});
+
+	suite('Return value consist of the "initNum", "initUnit", "returnNum", "returnUnit", and "string"', done => {
+		test('Valid input returns object with "initNum", "initUnit", "returnNum", "returnUnit", and "string" as keys', done => {
+			const input = '10L';
+			// assert.equal()
 			done();
 		});
-	});
+	})
 });

@@ -28,7 +28,7 @@ suite('Functional Tests with chai-http', function () {
 					assert.include(res.headers['content-type'], 'application/json');
 					assert.notProperty(res.body, 'err')
 					assert.equal(res.body.initNum, 10);
-					assert.equal(res.body.initUnit, 'l')
+					assert.equal(res.body.initUnit, 'L')
 					assert.equal(res.body.returnUnitStr, 'gallons');
 					assert.approximately(parseFloat(res.body.returnNum), 2.64172, 0.1);
 					assert.property(res.body, 'string');
@@ -73,11 +73,11 @@ suite('Functional Tests with chai-http', function () {
 					assert.include(res.headers['content-type'], 'application/json');
 					assert.property(res.body, 'err');
 					['initNum', 'returnNum', 'initUnit', 'returnUnit', 'string'].every(prop => assert.notProperty(res.body, prop));
-					assert.equal(res.body.msg, 'invalid number and invalid unit');
+					assert.equal(res.body.msg, 'invalid number and unit');
 					done();
 				});
 		});
-		test('', done => {
+		test('Convert valid units without number 👉🏾️ kg', done => {
 			chai
 				.request(server)
 				.get('/api/convert')

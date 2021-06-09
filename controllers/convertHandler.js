@@ -4,7 +4,7 @@ function ConvertHandler() {
       'gal': 'gallons',
       'kg': 'kilograms',
       'km': 'kilometers',
-      'l': 'liters',
+      'L': 'liters',
       'lbs': 'pounds',
       'mi': 'miles',
     }
@@ -51,18 +51,18 @@ function ConvertHandler() {
 
   this.getUnit = function (input) {
     const validUnits = this.validUnits();
-    let unit = input.match(/[a-z]/gi).join('').toLowerCase();
-    if (!Object.keys(validUnits).includes(unit)) return ({ isUnit: false });
-    return {
-      isUnit: true,
-      value: unit,
-    }
+    let unit = input.match(/[a-zA-Z]/g).join('');
+    unit = unit === 'l' || unit === 'L' ? unit.toUpperCase() : unit.toLowerCase();
+    let result;
+    result = !Object.keys(validUnits).includes(unit) ? { isUnit: false } : { isUnit: true, value: unit, }
+    // console.log(result)
+    return result
   };
 
   this.getReturnUnit = function (initUnit) {
     switch (initUnit) {
       case ('gal'):
-        return 'l';
+        return 'L';
       case ('mi'):
         return 'km';
       case ('lbs'):
@@ -71,7 +71,7 @@ function ConvertHandler() {
         return 'lbs';
       case ('km'):
         return 'mi';
-      case ('l'):
+      case ( 'L'):
         return 'gal';
       default:
         return 'invalid unit'
@@ -92,7 +92,12 @@ function ConvertHandler() {
     const kgToLbs = 1 / lbsToKg;
     const kmToMi = 1 / miToKm;
 
-    
+    // console.log(initNum)
+
+    if (isNaN(initNum)) return 'invalid number';
+
+    if (isNaN(initNum) && !Object.keys(this.validUnits()).includes(initUnit)) return 'invalid number and unit';
+
     switch (initUnit) {
       case ('gal'):
         return (initNum * galToL) === 1 ? 1 : (initNum * galToL).toFixed(5);
@@ -104,7 +109,7 @@ function ConvertHandler() {
         return (initNum * kgToLbs) === 1 ? 1 : (initNum * kgToLbs).toFixed(5);
       case ('km'):
         return (initNum * kmToMi) === 1 ? 1 : (initNum * kmToMi).toFixed(5);
-      case ('l'):
+      case ('L'):
         return (initNum * lToGal) === 1 ? 1 : (initNum * lToGal).toFixed(5);
       default:
         return 'invalid unit'
@@ -113,23 +118,23 @@ function ConvertHandler() {
 
   this.getString = function (input) {
     const initUnit = this.getUnit(input).value || 'invalid unit';
-    const fullInitUnit = this.spellOutUnit(initUnit);
+    const initUnitString = this.spellOutUnit(initUnit);
     
     const returnUnit = this.getReturnUnit(initUnit);
-    const fullReturnunit = this.spellOutUnit(returnUnit);
+    const returnUnitString = this.spellOutUnit(returnUnit);
 
     const initNum = this.getNum(input);
     const returnNum = initNum.isNum ? this.convert(initNum.value, initUnit) : 'invalid number';
 
     switch(true) {
       case(returnNum === 'invalid number' && returnUnit === 'invalid unit'):
-        return {err: true, msg:`${returnNum} and ${returnUnit}`};
+        return {err: true, msg:`invalid number and unit`};
       case(returnNum === 'invalid number'):
         return {err: true, msg: returnNum};
       case(returnUnit === 'invalid unit'):
         return {err: true, msg: returnUnit};
       default:
-        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit};
+        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit, string: `${initNum} ${initUnitString} converts to ${returnNum} ${returnUnitString}`};
     }
   };
 }
