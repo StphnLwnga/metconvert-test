@@ -91,6 +91,19 @@ suite('Unit Tests', function () {
 		});
 	});
 
+	suite('Test unit input validity', function() {
+		test('Invalid measurement returns "invalid unit"', done => {
+			const input = "xxx";
+			const validUnits = convertHandler.validUnits();
+			assert.notInclude(validUnits, input);
+			assert.equal(convertHandler.getReturnUnit(input), 'invalid unit');
+			done();
+		});
+		// test('Invalid number returns "invalid number"', done => {
+		// 	const input = 
+		// })
+	})
+
 	suite('Test correct unit conversion with the converted units method', function () {
 		test('Return the correct return unit for each valid input', done => {
 			const input = ['gal', 'kg', 'km', 'L', 'lbs', 'mi',];
