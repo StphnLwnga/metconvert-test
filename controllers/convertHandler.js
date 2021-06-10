@@ -11,41 +11,35 @@ function ConvertHandler() {
   }
 
   this.getNum = function (input) {
-    if (input.match(/\d/g) === null && Object.keys(this.validUnits()).includes(input.match(/\w/gi).join(''))) return {
-      isNum: true,
-      value: 1,
-    }
+    if (input.match(/\d/g) === null && Object.keys(this.validUnits()).includes(input.match(/\w/gi).join(''))) return 1
 
-    if (input.match(/\d*\W{2,}\d/g) !== null) return { isNum: false }
+    if (input.match(/\d*\W{2,}\d/g) !== null) return 'invalid number'
 
     // If not fraction parse float from input
     if (!input.includes('/')) {
       let num = parseFloat(input)
       if (!isNaN(num)) {
-        return ({
-          isNum: true,
-          value: num,
-        })
+        return num
       } else {
-        return { isNum: false }
+        return 'invalid number';
       }
     };
 
-    if (input.includes('.') && [...input].filter(charac => charac === '.').length > 1) return { isNum: false }
+    if (input.includes('.') && [...input].filter(charac => charac === '.').length > 1) return 'invalid number'
 
     // If fraction in input strip out unit
     if (input.includes('/')) {
       let found = input.match(/\d|\W/g);
-      if (found === null && found.filter(charac => charac.match(/\W/g)).length === 0) return { isNum: true, value: 1 };
+      if (found === null && found.filter(charac => charac.match(/\W/g)).length === 0) return 1;
 
       if (
         found.filter(charac => charac === '/').length > 1
         || found.filter(charac => charac === '.').length > 1
         || found.join('').match(/\d/g) === null
-      ) return { isNum: false };
+      ) return 'invalid number';
 
       const execOperation = opStr => { return Function(`return ${opStr}`)() }
-      return { isNum: true, value: execOperation(found.join('')), }
+      return execOperation(found.join(''))
     }
   };
 
@@ -125,18 +119,26 @@ function ConvertHandler() {
     const returnUnitString = this.spellOutUnit(returnUnit);
 
     const initNum = this.getNum(input);
-    const returnNum = initNum.isNum ? this.convert(initNum.value, initUnit) : 'invalid number';
+    const returnNum = !isNaN(initNum) ? this.convert(initNum, initUnit) : 'invalid number';
+
+    let result;
 
     switch(true) {
       case(returnNum === 'invalid number' && returnUnit === 'invalid unit'):
-        return {err: true, msg:`invalid number and unit`};
+        result = {err: true, msg:`invalid number and unit`};
+        break;
       case(returnNum === 'invalid number'):
-        return {err: true, msg: returnNum};
+        result = {err: true, msg: returnNum};
+        break;
       case(returnUnit === 'invalid unit'):
-        return {err: true, msg: returnUnit};
+        result = {err: true, msg: returnUnit};
+        break;
       default:
-        return {initNum: initNum.value, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit, string: `${initNum.value} ${initUnitString} converts to ${returnNum} ${returnUnitString}`};
+        result = {initNum: initNum, initUnit: initUnit, returnNum: returnNum, returnUnit: returnUnit, string: `${initNum} ${initUnitString} converts to ${returnNum} ${returnUnitString}`};
+        break;
     }
+    console.log(result)
+    return result
   };
 }
 

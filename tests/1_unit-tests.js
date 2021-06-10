@@ -15,38 +15,34 @@ suite('Unit Tests', function () {
 	suite('Check for valid & invalid numerical input in the get number method', function () {
 		test('Accept a whole number input as valid', done => {
 			const input = '32';
-			assert.isTrue(convertHandler.getNum(input).isNum, 'The method accepts a whole number and returns a numerical value');
-			assert.equal(convertHandler.getNum(input).value, 32);
+			assert.isFalse(isNaN(input), 'The method accepts a whole number and returns a numerical value');
+			assert.equal(convertHandler.getNum(input), 32);
 			done();
 		});
 		test('Accept a decimal number input as valid', done => {
 			const input = '5.5';
-			assert.isTrue(convertHandler.getNum(input).isNum, 'The method accepts a decimal number and returns a numerical value');
-			assert.equal(convertHandler.getNum(input).value, 5.5);
+			assert.isFalse(isNaN(input), 'The method accepts a decimal number and returns a numerical value');
+			assert.equal(convertHandler.getNum(input), 5.5);
 			done();
 		});
 		test('Accept a fractional input as valid', done => {
-			const input = '6/3';
-			assert.isTrue(convertHandler.getNum(input).isNum, 'The method accepts a fraction and returns a numerical value');
-			assert.equal(convertHandler.getNum(input).value, 2);
+			const input = '4/5';
+			assert.equal(convertHandler.getNum(input), 0.8);
 			done();
 		});
 		test('Accept a fractional input with decimal as valid', done => {
-			const input = '100/2.5';
-			assert.isTrue(convertHandler.getNum(input).isNum, 'The method accepts a fractional input with a decimal and returns a numerical value');
-			assert.equal(convertHandler.getNum(input).value, 40);
+			const input = '2.5/10';
+			assert.equal(convertHandler.getNum(input), 0.25);
 			done();
 		});
 		test('Return an error on a double fractional input', done => {
 			const input = '1000/5/10';
-			assert.isFalse(convertHandler.getNum(input).isNum, 'Error on double fractional input');
-			assert.isUndefined(convertHandler.getNum(input).value);
+			assert.equal(convertHandler.getNum(input), 'invalid number');
 			done();
 		});
 		test('Default to 1 when no numerical input is provided', done => {
 			const input = 'lbs';
-			assert.isTrue(convertHandler.getNum(input).isNum, 'Empty input return 1');
-			assert.equal(convertHandler.getNum(input).value, 1, 'Passing in valid units without numbers defaults to 1 of that unit');
+			assert.equal(convertHandler.getNum(input), 1, 'Passing in valid units without numbers defaults to 1 of that unit');
 			done();
 		});
 	});
@@ -119,7 +115,7 @@ suite('Unit Tests', function () {
 		});
 		test('Return "invalid number" if input contains invalid number', done => {
 			const input = '3/7.2/4kg';
-			const initNum = convertHandler.getNum(input).value;
+			const initNum = convertHandler.getNum(input);
 			const initUnit = convertHandler.getUnit(input).value;
 			assert.isTrue(convertHandler.getUnit(input).isUnit);
 			assert.equal(convertHandler.convert(initNum, initUnit), 'invalid number');
@@ -127,7 +123,7 @@ suite('Unit Tests', function () {
 		});
 		test('Return "invalid number and unit" if input contains both an invalid number and unit', done => {
 			const input = '3/7.2/4kilomegagram';
-			const initNum = convertHandler.getNum(input).value;
+			const initNum = convertHandler.getNum(input);
 			const initUnit = 'kilomegagram';
 			assert.isFalse(convertHandler.getUnit(input).isUnit);
 			assert.equal(convertHandler.getString(input).msg, 'invalid number and unit');
