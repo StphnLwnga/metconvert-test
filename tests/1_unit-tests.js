@@ -94,7 +94,7 @@ suite('Unit Tests', function () {
 	suite('Test unit input validity', function() {
 		test('Invalid measurement returns "invalid unit"', done => {
 			const input = "xxx";
-			const validUnits = convertHandler.validUnits();
+			const validUnits = Object.keys(convertHandler.validUnits());
 			assert.notInclude(validUnits, input);
 			assert.equal(convertHandler.getReturnUnit(input), 'invalid unit');
 			done();
